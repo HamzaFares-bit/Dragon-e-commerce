@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Boutique en Ligne</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .marketing-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .marketing-bg::before {
+            content: '';
+            position: absolute;
+            top: -100px; left: -100px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, #fff 0%, #764ba2 60%, transparent 100%);
+            opacity: 0.12;
+            border-radius: 50%;
+        }
+        .marketing-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -120px; right: -120px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #28a745 0%, #667eea 60%, transparent 100%);
+            opacity: 0.10;
+            border-radius: 50%;
+        }
+        .main-container {
+            background: rgba(255,255,255,0.97);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(76, 70, 180, 0.10);
+            padding: 48px 36px 36px 36px;
+            min-width: 340px;
+            max-width: 95vw;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .header-marketing {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .logo-marketing {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #28a745, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(40,167,69,0.10);
+        }
+        .brand-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: #4b3fa7;
+            letter-spacing: 1px;
+        }
+        .slogan {
+            color: #20c997;
+            font-size: 1.1em;
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+        h1 {
+            color: #4b3fa7;
+            margin-bottom: 18px;
+            font-size: 2.1em;
+            font-weight: 700;
+        }
+        .accroche {
+            font-size: 1.15em;
+            color: #555;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+        .btn {
+            margin: 12px 7px;
+            padding: 15px 36px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            font-size: 1.15em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(40,167,69,0.10);
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.5px;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #20c997, #28a745);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 18px rgba(40,167,69,0.18);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #495057, #6c757d);
+        }
+        .avantages {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+            margin: 38px 0 18px 0;
+        }
+        .avantage-card {
+            background: #f8f9fa;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(76, 70, 180, 0.06);
+            padding: 22px 18px;
+            min-width: 180px;
+            max-width: 220px;
+            flex: 1 1 180px;
+            text-align: center;
+            color: #333;
+        }
+        .avantage-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #28a745;
+        }
+        .avantage-card strong {
+            color: #4b3fa7;
+            font-size: 1.08em;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0 16px 0;
+            border: 1.5px solid #e1e5e9;
+            border-radius: 7px;
+            font-size: 1em;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #764ba2;
+            outline: none;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #007bff, #764ba2);
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        input[type="submit"]:hover {
+            background: linear-gradient(135deg, #764ba2, #007bff);
+            transform: scale(1.03);
+        }
+        .flash {
+            color: #dc3545;
+            margin-top: 18px;
+            font-weight: bold;
+            background: #fff0f3;
+            border-radius: 8px;
+            padding: 10px 0;
+        }
+        @media (max-width: 900px) {
+            .avantages { flex-direction: column; gap: 16px; }
+            .avantage-card { min-width: unset; max-width: unset; }
+        }
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 18px 5vw 18px 5vw;
+                min-width: unset;
+            }
+            h1, .brand-title { font-size: 1.3em; }
+            .header-marketing { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="marketing-bg"></div>
+<div class="main-container">
+    <div class="header-marketing">
+        <div class="logo-marketing">🛒</div>
+        <span class="brand-title">ShopNow</span>
+    </div>
+    <div class="slogan">La mode, la qualité et l’innovation à portée de clic !</div>
+    <h1>Bienvenue dans notre Boutique</h1>
+    <div class="accroche">Découvrez les dernières tendances, profitez d’offres exclusives et vivez une expérience d’achat unique. <br> Inscrivez-vous ou connectez-vous pour accéder à nos produits !</div>
+    <button class="btn" id="btnVoirProduits" onclick="afficherChoix()">Voir les produits</button>
+
+    <div id="choix" class="modal">
+        <button class="btn" onclick="afficherInscription()">S'inscrire</button>
+        <button class="btn btn-secondary" onclick="afficherConnexion()">Se connecter</button>
+    </div>
+
+    <div id="formInscription" class="form-container">
+        <h2>Inscription</h2>
+        <form method="POST" action="/inscription">
+            <label>Nom :</label><br>
+            <input type="text" name="nom" required><br>
+
+            <label>Email :</label><br>
+            <input type="email" name="email" required><br>
+
+            <label>Mot de passe :</label><br>
+            <input type="password" name="password" required><br>
+
+            <label>Confirmer le mot de passe :</label><br>
+            <input type="password" name="confirm_password" required><br>
+
+            <input type="submit" value="S'inscrire">
+        </form>
+    </div>
+
+    <button class="btn btn-secondary" id="btnConnexionBas" onclick="afficherConnexion()" style="display:none;">Se connecter</button>
+
+    <!-- Formulaire de connexion -->
+    <div id="formConnexion" class="form-container">
+        <h2>Connexion</h2>
+        <form method="POST" action="/connexion">
+            <label>Email :</label><br>
+            <input type="email" name="email" required><br>
+
+            <label>Mot de passe :</label><br>
+            <input type="password" name="password" required><br>
+
+            <input type="submit" value="Se connecter">
+        </form>
+    </div>
+
+    <div class="avantages">
+        <div class="avantage-card">
+            <div class="icon">🚚</div>
+            <strong>Livraison rapide</strong><br>
+            Recevez vos commandes en 24/48h partout au Maroc !
+        </div>
+        <div class="avantage-card">
+            <div class="icon">🔒</div>
+            <strong>Paiement sécurisé</strong><br>
+            Transactions protégées et données confidentielles.
+        </div>
+        <div class="avantage-card">
+            <div class="icon">🎁</div>
+            <strong>Offres exclusives</strong><br>
+            Promotions et réductions toute l’année.
+        </div>
+        <div class="avantage-card">
+            <div class="icon">⭐</div>
+            <strong>Satisfaction garantie</strong><br>
+            Retour facile sous 14 jours.
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for msg in messages %}
+            <p>{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+</div>
+<script>
+function afficherChoix() {
+    document.getElementById('choix').style.display = 'block';
+    document.getElementById('btnVoirProduits').style.display = 'none';
+    document.getElementById('btnConnexionBas').style.display = 'none';
+    document.getElementById('formInscription').style.display = 'none';
+    document.getElementById('formConnexion').style.display = 'none';
+}
+function afficherInscription() {
+    document.getElementById('formInscription').style.display = 'block';
+    document.getElementById('formConnexion').style.display = 'none';
+}
+function afficherConnexion() {
+    document.getElementById('formConnexion').style.display = 'block';
+    document.getElementById('formInscription').style.display = 'none';
+}
+// Affichage/fermeture des modals (bonus UX)
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('main-container')) return;
+    if (e.target.classList.contains('btn')) return;
+    if (e.target.closest('.form-container') || e.target.closest('.modal')) return;
+    document.getElementById('choix').style.display = 'none';
+    document.getElementById('formInscription').style.display = 'none';
+    document.getElementById('formConnexion').style.display = 'none';
+    document.getElementById('btnVoirProduits').style.display = '';
+    document.getElementById('btnConnexionBas').style.display = 'none';
+});
+</script>
+</body>
+</html>

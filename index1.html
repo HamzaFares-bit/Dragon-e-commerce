@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidéos Instagram - Oujda</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            padding: 20px;
+            justify-content: center;
+        }
+        .thumbnail {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Bienvenue dans notre Boutique</h1>
+            <p>Découvrez nos produits et vidéos</p>
+        </div>
+    </div>
+    
+    <div class="video-container">
+        <!-- Vidéo 1 -->
+        <a href="video.html?url=https://www.instagram.com/reel/DHD25lAM6mn/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video1.jpg') }}" alt="Vidéo 1">
+        </a>
+
+        <!-- Vidéo 2 -->
+        <a href="video.html?url=https://www.instagram.com/reel/DG-gxKvqi8d/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video2.jpg') }}" alt="Vidéo 1">
+        </a>
+
+        <!-- Vidéo 3 -->
+        <a href="video.html?url=https://www.instagram.com/reel/DHDo7iFqtsQ/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video3.jpg') }}" alt="Vidéo 1">
+        </a>
+         <!-- Vidéo 5 -->
+         <a href="video.html?url=https://www.instagram.com/reel/DHGh4ooMLMQ/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video5.jpg') }}" alt="Vidéo 1">
+        </a>
+
+
+        <!-- Vidéo 6 -->
+        <a href="video.html?url=https://www.instagram.com/reel/DGXykONK1c1/embed ">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video6.jpg') }}" alt="Vidéo 1">
+        </a>
+
+        <!-- Vidéo 7 -->
+        <a href="video.html?url=https://www.instagram.com/reel/DGXyXAYqXsu/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video7.jpg') }}" alt="Vidéo 1">
+        </a>
+
+         <!-- Vidéo 8 -->
+        <a href="video.html?url=https://www.instagram.com/reel/DGkwNgGKiik/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video8.jpg') }}" alt="Vidéo 1">
+        </a>
+
+        <!-- Vidéo 9 -->
+        <a href="video.html?url=https://www.instagram.com/reel/DDWyKv5Iul6/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video9.jpg') }}" alt="Vidéo 1">
+        </a>
+
+        <!-- Vidéo 10 -->
+        <a href="video.html?url=https://www.instagram.com/reel/Ca4HmaRoj-6/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video10.jpg') }}" alt="Vidéo 1">
+        </a>
+
+
+        <!-- Vidéo 11 -->
+        <a href="video.html?url=https://www.instagram.com/reel/DBjGsvYMhxT/embed">
+<img class="thumbnail" src="{{ url_for('static', filename='images/video11.jpg') }}" alt="Vidéo 1">
+        </a>
+
+
+
+
+    </div>
+
+</body>
+</html>

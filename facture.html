@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture - Confirmation de commande</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .success-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .invoice-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .info-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .order-details {
+            margin-bottom: 40px;
+        }
+
+        .order-details h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-table th {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .order-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .order-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .total-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: right;
+        }
+
+        .total-amount {
+            font-size: 2em;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #28a745;
+            border: 2px solid #28a745;
+        }
+
+        .btn-outline:hover {
+            background: #28a745;
+            color: white;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .qr-code img {
+            width: 150px;
+            height: 150px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .invoice-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="success-icon">✅</div>
+            <h1>Commande Confirmée !</h1>
+            <p>Votre paiement a été traité avec succès</p>
+        </div>
+
+        <div class="content">
+            <div class="invoice-info">
+                <div class="info-section">
+                    <h3>📋 Informations de commande</h3>
+                    <div class="info-item">
+                        <span class="info-label">Numéro de commande:</span>
+                        <span class="info-value" id="orderNumber">CMD-2024-001</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Date de commande:</span>
+                        <span class="info-value" id="orderDate">--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Statut:</span>
+                        <span class="info-value" style="color: #28a745; font-weight: bold;">✅ Payée</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Transaction ID:</span>
+                        <span class="info-value" id="transactionId">--</span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>👤 Informations client</h3>
+                    <div class="info-item">
+                        <span class="info-label">Nom:</span>
+                        <span class="info-value" id="customerName">--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value" id="customerEmail">--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Méthode de paiement:</span>
+                        <span class="info-value">💳 Carte bancaire</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-details">
+                <h3>🛍️ Détails de la commande</h3>
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Marque</th>
+                            <th>Couleur</th>
+                            <th>Taille</th>
+                            <th>Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderItems">
+                        <!-- Les articles seront ajoutés ici -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="total-section">
+                <div class="total-amount">
+                    Total: <span id="totalAmount">0</span> DH
+                </div>
+            </div>
+
+            <div class="qr-code">
+                <h4>📱 QR Code pour le suivi</h4>
+                <div style="width: 150px; height: 150px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-size: 12px; color: #666;">
+                    QR Code<br>Commande
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="downloadInvoice()">
+                    📄 Télécharger la facture
+                </button>
+                <button class="btn btn-outline" onclick="printInvoice()">
+                    🖨️ Imprimer
+                </button>
+                <a href="/" class="btn btn-secondary">
+                    🏠 Retour à l'accueil
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Merci pour votre confiance ! Votre commande sera traitée dans les plus brefs délais.</p>
+            <p>Pour toute question, contactez-nous à support@votresite.com</p>
+        </div>
+    </div>
+
+    <script>
+        // Récupération des données
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const customerInfo = JSON.parse(localStorage.getItem('customerInfo')) || {};
+        const total = localStorage.getItem('cartTotal') || 0;
+
+        // Génération d'un numéro de commande unique
+        const orderNumber = 'CMD-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-6);
+        
+        // Affichage des informations
+        document.getElementById('orderNumber').textContent = orderNumber;
+        document.getElementById('orderDate').textContent = new Date().toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        document.getElementById('transactionId').textContent = customerInfo.transactionId || 'TXN' + Date.now();
+        document.getElementById('customerName').textContent = customerInfo.firstName && customerInfo.lastName ? 
+            `${customerInfo.firstName} ${customerInfo.lastName}` : 'Client';
+        document.getElementById('customerEmail').textContent = customerInfo.email || 'Non spécifié';
+        document.getElementById('totalAmount').textContent = total;
+
+        // Affichage des articles
+        const orderItemsContainer = document.getElementById('orderItems');
+        if (cart.length === 0) {
+            orderItemsContainer.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #666;">Aucun article</td></tr>';
+        } else {
+            let itemsHTML = '';
+            cart.forEach(item => {
+                itemsHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.brand}</td>
+                        <td>${item.color}</td>
+                        <td>${item.size}</td>
+                        <td>${item.price} DH</td>
+                    </tr>
+                `;
+            });
+            orderItemsContainer.innerHTML = itemsHTML;
+        }
+
+        // Fonction pour télécharger la facture
+        function downloadInvoice() {
+            // En production, vous généreriez un vrai PDF
+            alert('Fonctionnalité de téléchargement en cours de développement');
+        }
+
+        // Fonction pour imprimer
+        function printInvoice() {
+            window.print();
+        }
+
+        // Nettoyage du panier après affichage de la facture
+        setTimeout(() => {
+            localStorage.removeItem('cart');
+            localStorage.removeItem('cartTotal');
+        }, 5000);
+    </script>
+</body>
+</html> 

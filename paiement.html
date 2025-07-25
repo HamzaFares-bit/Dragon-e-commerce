@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement Sécurisé</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .order-summary h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .cart-items {
+            margin-bottom: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .total {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #28a745;
+            text-align: center;
+            padding-top: 15px;
+            border-top: 2px solid #28a745;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 25px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .card-icon.visa {
+            background: #1a1f71;
+            color: white;
+        }
+
+        .card-icon.mastercard {
+            background: #eb001b;
+            color: white;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success {
+            color: #28a745;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #28a745;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            color: #28a745;
+            font-size: 14px;
+        }
+
+        .secure-badge::before {
+            content: "🔒";
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💳 Paiement Sécurisé</h1>
+            <p>Finalisez votre commande en toute sécurité</p>
+        </div>
+
+        <div class="order-summary">
+            <h3>📋 Résumé de votre commande</h3>
+            <div id="cartItems" class="cart-items">
+                <!-- Les articles du panier seront affichés ici -->
+            </div>
+            <div class="total">
+                Total: <span id="totalAmount">0</span> DH
+            </div>
+        </div>
+
+        <form id="paymentForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">Prénom *</label>
+                    <input type="text" id="firstName" required>
+                    <div class="error" id="firstNameError">Le prénom est requis</div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Nom *</label>
+                    <input type="text" id="lastName" required>
+                    <div class="error" id="lastNameError">Le nom est requis</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" required>
+                <div class="error" id="emailError">Email invalide</div>
+            </div>
+
+            <div class="form-group">
+                <label for="cardNumber">Numéro de carte *</label>
+                <input type="text" id="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456" required>
+                <div class="error" id="cardNumberError">Numéro de carte invalide</div>
+                <div class="card-icons">
+                    <div class="card-icon visa">VISA</div>
+                    <div class="card-icon mastercard">MC</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="expiryDate">Date d'expiration *</label>
+                    <input type="text" id="expiryDate" maxlength="5" placeholder="MM/AA" required>
+                    <div class="error" id="expiryError">Format invalide (MM/AA)</div>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV *</label>
+                    <input type="text" id="cvv" maxlength="4" placeholder="123" required>
+                    <div class="error" id="cvvError">CVV invalide</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="payButton">
+                💳 Payer maintenant
+            </button>
+        </form>
+
+        <button class="btn btn-secondary" onclick="goBack()">
+            ← Retour au panier
+        </button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Traitement du paiement en cours...</p>
+        </div>
+
+        <div class="secure-badge">
+            Paiement 100% sécurisé - SSL/TLS
+        </div>
+    </div>
+
+    <script>
+        // Récupération des données du panier
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let total = localStorage.getItem('cartTotal') || 0;
+
+        // Affichage du résumé de commande
+        function displayOrderSummary() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const totalElement = document.getElementById('totalAmount');
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Aucun article dans le panier</p>';
+                totalElement.textContent = '0';
+                return;
+            }
+
+            let itemsHTML = '';
+            cart.forEach(item => {
+                itemsHTML += `
+                    <div class="cart-item">
+                        <span>${item.name} (${item.brand} - ${item.color} - ${item.size})</span>
+                        <span>${item.price} DH</span>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = itemsHTML;
+            totalElement.textContent = total;
+        }
+
+        // Formatage automatique du numéro de carte
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = '';
+            
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            
+            e.target.value = formattedValue;
+        });
+
+        // Formatage automatique de la date d'expiration
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // Validation en temps réel
+        function validateField(fieldId, validationFn, errorId) {
+            const field = document.getElementById(fieldId);
+            const error = document.getElementById(errorId);
+            
+            field.addEventListener('blur', function() {
+                if (!validationFn(this.value)) {
+                    error.style.display = 'block';
+                    this.style.borderColor = '#dc3545';
+                } else {
+                    error.style.display = 'none';
+                    this.style.borderColor = '#28a745';
+                }
+            });
+
+            field.addEventListener('input', function() {
+                if (validationFn(this.value)) {
+                    error.style.display = 'none';
+                    this.style.borderColor = '#28a745';
+                }
+            });
+        }
+
+        // Validation des champs
+        validateField('firstName', value => value.trim().length >= 2, 'firstNameError');
+        validateField('lastName', value => value.trim().length >= 2, 'lastNameError');
+        validateField('email', value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), 'emailError');
+        validateField('cardNumber', value => value.replace(/\s/g, '').length === 16, 'cardNumberError');
+        validateField('cvv', value => value.length >= 3 && value.length <= 4, 'cvvError');
+        validateField('expiryDate', value => /^\d{2}\/\d{2}$/.test(value), 'expiryError');
+
+        // Traitement du formulaire
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validation complète
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+
+            // Vérifications
+            if (!firstName.trim() || !lastName.trim() || !email || !cardNumber || !expiryDate || !cvv) {
+                alert('Veuillez remplir tous les champs obligatoires');
+                return;
+            }
+
+            if (cardNumber.length !== 16) {
+                alert('Numéro de carte invalide');
+                return;
+            }
+
+            if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                alert('Format de date invalide');
+                return;
+            }
+
+            if (cvv.length < 3 || cvv.length > 4) {
+                alert('CVV invalide');
+                return;
+            }
+
+            // Simulation du traitement de paiement
+            processPayment();
+        });
+
+        function processPayment() {
+            const loading = document.getElementById('loading');
+            const payButton = document.getElementById('payButton');
+            
+            loading.style.display = 'block';
+            payButton.disabled = true;
+            payButton.textContent = 'Traitement...';
+
+            // Simulation d'un délai de traitement
+            setTimeout(() => {
+                const success = Math.random() > 0.1; // 90% de succès
+
+                if (success) {
+                    // Sauvegarde des informations pour la facture
+                    localStorage.setItem('customerInfo', JSON.stringify({
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        email: document.getElementById('email').value,
+                        paymentDate: new Date().toISOString(),
+                        transactionId: 'TXN' + Date.now()
+                    }));
+
+                    alert('✅ Paiement réussi ! Redirection vers votre facture...');
+                    window.location.href = '/facture';
+                } else {
+                    alert('❌ Paiement échoué. Veuillez réessayer.');
+                }
+
+                loading.style.display = 'none';
+                payButton.disabled = false;
+                payButton.textContent = '💳 Payer maintenant';
+            }, 2000);
+        }
+
+        function goBack() {
+            window.location.href = '/video.html';
+        }
+
+        // Initialisation
+        displayOrderSummary();
+    </script>
+</body>
+</html> 
